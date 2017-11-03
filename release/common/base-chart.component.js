@@ -1,5 +1,6 @@
 import { ElementRef, NgZone, ChangeDetectorRef, Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { VisibilityObserver } from '../utils';
@@ -12,18 +13,27 @@ var BaseChartComponent = /** @class */ (function () {
         this.schemeType = 'ordinal';
         this.animations = true;
         this.select = new EventEmitter();
+        this.domainChanged = new EventEmitter();
+        this.domainObserver = new Subject();
     }
     BaseChartComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
         this.bindWindowResizeEvent();
         // listen for visibility of the element for hidden by default scenario
         this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
         this.visibilityObserver.visible.subscribe(this.update.bind(this));
+        this.domainObserver
+            .debounceTime(200)
+            .subscribe(function (domainData) { _this.domainChanged.emit(domainData); });
     };
     BaseChartComponent.prototype.ngOnDestroy = function () {
         this.unbindEvents();
         if (this.visibilityObserver) {
             this.visibilityObserver.visible.unsubscribe();
             this.visibilityObserver.destroy();
+        }
+        if (this.domainObserver) {
+            this.domainObserver.unsubscribe();
         }
     };
     BaseChartComponent.prototype.ngOnChanges = function (changes) {
@@ -162,6 +172,7 @@ var BaseChartComponent = /** @class */ (function () {
         'customColors': [{ type: Input },],
         'animations': [{ type: Input },],
         'select': [{ type: Output },],
+        'domainChanged': [{ type: Output },],
     };
     return BaseChartComponent;
 }());

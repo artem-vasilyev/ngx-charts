@@ -46,8 +46,12 @@ var Timeline = /** @class */ (function () {
         }
         var domain = [];
         if (this.scaleType === 'time') {
-            var min = Math.min.apply(Math, values);
-            var max = Math.max.apply(Math, values);
+            var min = this.xScaleMin
+                ? new Date(this.xScaleMin)
+                : Math.min.apply(Math, values);
+            var max = this.xScaleMax
+                ? new Date(this.xScaleMax)
+                : Math.max.apply(Math, values);
             domain = [min, max];
         }
         else if (this.scaleType === 'linear') {
@@ -148,6 +152,8 @@ var Timeline = /** @class */ (function () {
         'autoScale': [{ type: Input },],
         'scaleType': [{ type: Input },],
         'height': [{ type: Input },],
+        'xScaleMin': [{ type: Input },],
+        'xScaleMax': [{ type: Input },],
         'select': [{ type: Output },],
         'onDomainChange': [{ type: Output },],
     };

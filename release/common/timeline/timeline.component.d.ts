@@ -11,6 +11,8 @@ export declare class Timeline implements OnChanges {
     autoScale: any;
     scaleType: any;
     height: number;
+    xScaleMin: any;
+    xScaleMax: any;
     select: EventEmitter<{}>;
     onDomainChange: EventEmitter<{}>;
     element: HTMLElement;

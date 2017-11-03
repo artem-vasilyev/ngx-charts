@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { VisibilityObserver } from '../utils';
@@ -22,11 +23,13 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();
+  @Output() domainChanged = new EventEmitter();
 
   width: number;
   height: number;
   resizeSubscription: any;
   visibilityObserver: VisibilityObserver;
+  domainObserver: Subject<any> = new Subject<any>();
 
   constructor(
     protected chartElement: ElementRef,
@@ -40,6 +43,9 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
     // listen for visibility of the element for hidden by default scenario
     this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
     this.visibilityObserver.visible.subscribe(this.update.bind(this));
+    this.domainObserver
+        .debounceTime(200)
+        .subscribe((domainData) => { this.domainChanged.emit(domainData); });
   }
 
   ngOnDestroy(): void {
@@ -47,6 +53,9 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
     if (this.visibilityObserver) {
       this.visibilityObserver.visible.unsubscribe();
       this.visibilityObserver.destroy();
+    }
+    if (this.domainObserver) {
+        this.domainObserver.unsubscribe();
     }
   }
 

@@ -32,6 +32,7 @@ export declare class LineChartComponent extends BaseChartComponent {
     yScaleMax: number;
     activate: EventEmitter<any>;
     deactivate: EventEmitter<any>;
+    timelineSelect: EventEmitter<any>;
     tooltipTemplate: TemplateRef<any>;
     seriesTooltipTemplate: TemplateRef<any>;
     dims: ViewDimensions;

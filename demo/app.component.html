@@ -279,6 +279,7 @@
         [rangeFillOpacity]="rangeFillOpacity"
         [roundDomains]="roundDomains"
         [tooltipDisabled]="tooltipDisabled"
+        (domainChanged)="domainChanged($event)"
         (select)="select($event)">
       </ngx-charts-line-chart>
       <ngx-charts-polar-chart

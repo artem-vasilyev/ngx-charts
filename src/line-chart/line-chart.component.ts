@@ -117,6 +117,8 @@ import { id } from '../utils/id';
       </svg:g>
       <svg:g ngx-charts-timeline
         *ngIf="timeline && scaleType === 'time'"
+        [xScaleMin]="xScaleMin" 
+        [xScaleMax]="xScaleMax"
         [attr.transform]="timelineTransform"
         [results]="results"
         [view]="[timelineWidth, height]"
@@ -189,6 +191,7 @@ export class LineChartComponent extends BaseChartComponent {
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
+  @Output() timelineSelect: EventEmitter<any> = new EventEmitter();
 
   @ContentChild('tooltipTemplate') tooltipTemplate: TemplateRef<any>;
   @ContentChild('seriesTooltipTemplate') seriesTooltipTemplate: TemplateRef<any>;
@@ -245,6 +248,7 @@ export class LineChartComponent extends BaseChartComponent {
 
     this.xDomain = this.getXDomain();
     if (this.filteredDomain) {
+      this.domainObserver.next(this.filteredDomain);
       this.xDomain = this.filteredDomain;
     }
 

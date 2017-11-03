@@ -48,6 +48,8 @@ export class Timeline implements OnChanges {
   @Input() autoScale;
   @Input() scaleType;
   @Input() height: number = 50;
+  @Input() xScaleMin: any;
+  @Input() xScaleMax: any;
 
   @Output() select = new EventEmitter();
   @Output() onDomainChange = new EventEmitter();
@@ -110,8 +112,12 @@ export class Timeline implements OnChanges {
 
     let domain = [];
     if (this.scaleType === 'time') {
-      const min = Math.min(...values);
-      const max = Math.max(...values);
+      const min = this.xScaleMin
+          ? new Date(this.xScaleMin)
+          : Math.min(...values);
+      const max = this.xScaleMax
+          ? new Date(this.xScaleMax)
+          : Math.max(...values);
       domain = [min, max];
     } else if (this.scaleType === 'linear') {
       values = values.map(v => Number(v));
@@ -157,7 +163,6 @@ export class Timeline implements OnChanges {
       .on('brush end', () => {
         const selection = d3event.selection || this.xScale.range();
         const newDomain = selection.map(this.xScale.invert);
-
         this.onDomainChange.emit(newDomain);
         this.cd.markForCheck();
       });

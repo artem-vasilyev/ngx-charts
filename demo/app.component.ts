@@ -141,7 +141,7 @@ export class AppComponent implements OnInit {
 
   // line, area
   autoScale = true;
-  timeline = false;
+  timeline = true;
 
   // margin
   margin: boolean = false;
@@ -254,7 +254,9 @@ export class AppComponent implements OnInit {
       this.applyDimensions();
     }
   }
-
+  domainChanged(event) {
+      console.log(event);
+  }
   updateData() {
     if (!this.realTimeData) {
       return;
@@ -667,5 +669,4 @@ export class AppComponent implements OnInit {
   onSelect(event) {
     console.log(event);
   }
-
 }
