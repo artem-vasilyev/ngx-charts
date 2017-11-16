@@ -8478,7 +8478,6 @@ var BaseChartComponent = /** @class */ (function () {
         this.visibilityObserver = new __WEBPACK_IMPORTED_MODULE_5__utils__["a" /* VisibilityObserver */](this.chartElement, this.zone);
         this.visibilityObserver.visible.subscribe(this.update.bind(this));
         this.domainObserver
-            .debounceTime(200)
             .subscribe(function (domainData) { _this.domainChanged.emit(domainData); });
     };
     BaseChartComponent.prototype.ngOnDestroy = function () {

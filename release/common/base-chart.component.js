@@ -23,7 +23,6 @@ var BaseChartComponent = /** @class */ (function () {
         this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
         this.visibilityObserver.visible.subscribe(this.update.bind(this));
         this.domainObserver
-            .debounceTime(200)
             .subscribe(function (domainData) { _this.domainChanged.emit(domainData); });
     };
     BaseChartComponent.prototype.ngOnDestroy = function () {

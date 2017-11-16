@@ -44,7 +44,6 @@ export class BaseChartComponent implements OnChanges, AfterViewInit, OnDestroy {
     this.visibilityObserver = new VisibilityObserver(this.chartElement, this.zone);
     this.visibilityObserver.visible.subscribe(this.update.bind(this));
     this.domainObserver
-        .debounceTime(200)
         .subscribe((domainData) => { this.domainChanged.emit(domainData); });
   }
 
